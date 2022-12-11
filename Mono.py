@@ -2,21 +2,34 @@ import random
 
 import pygame.draw
 
-GENSET = ['A', 'B', 'C', 'D']
+GENSET = ['A', 'B', 'C']
+VEL = 2
 
 
 class bio():
-    def __init__(self, name, position, scale, health, generation, body, brain):
+    def __init__(self, name, position, generation, body, brain):
         self.name = name
         self.position = position
-        self.scale = scale
-        self.health = health
         self.generation = generation
         self.body = body
         self.brain = brain
 
+
+    def att(self):
+        speed = self.body.genome.payload.count('A') * VEL + 1
+        size = self.body.genome.payload.count('B') * 2 + 5
+        heal = self.body.genome.payload.count('C') * 5 + 100
+        color = (255 / (self.body.genome.payload.count('C') + 1), 255 / (self.body.genome.payload.count('B') + 1),
+                 255 / (self.body.genome.payload.count('A') + 1))
+        self.speed = speed
+        self.color = color
+        self.scale = size
+        self.health = heal
+        print(self.name,self.health,self.scale)
+
+
     def draw(self, win):
-        pygame.draw.circle(win, (255, 0, 0), self.position, self.scale)
+        pygame.draw.circle(win, self.color, self.position, self.scale)
 
     def move(self, position):
         pass
@@ -38,7 +51,6 @@ class body():
         self.fullpayload.append(self.mouth.payload)
         self.fullpayload.append(self.genome.payload)
 
-        print (self.fullpayload)
 
 
 
