@@ -11,16 +11,18 @@ BG_COLOR = (255, 255, 255)
 WIDTH, HEIGHT = 800, 600
 FPS = 20
 
-POP = 5
+POP = 20
 AGING = 2
 
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 
 
-def draw(win, bio):
-    win.fill((0, 0, 0))
+def redraw(win, bio):
+    bg = pygame.image.load("assets/BG.png")
+    bg = pygame.transform.scale(bg,(WIDTH,HEIGHT))
+    win.blit(bg,(0,0),)
     for i in bio:
-        i.draw(win)
+        i.colorea(win)
     pygame.display.update()
 
 
@@ -34,13 +36,12 @@ def firstgen(pop):
         biogen = Mono.bio('Mono' + str(pop), (random.randrange(0, WIDTH), random.randrange(0, HEIGHT)), 1, puerpo,
                           celebro)
         biogen.att()
+        biogen.colorea(window)
         biomes.append(biogen)
     return biomes
 
 
 def action(biomes):
-    biosize = []
-    biohealth = []
     for i in biomes:
         if i.health <= 0:
             biomes.remove(i)
@@ -52,9 +53,6 @@ def action(biomes):
         if dice == 2:
             i.health -= AGING
             i.scale += 1
-        biosize.append(i.scale)
-        biohealth.append(i.health)
-    return biosize,biohealth
 
 def pinta(gentime):
     i=0
@@ -71,8 +69,6 @@ def pinta(gentime):
 def main(win):
     clock = pygame.time.Clock()
     primer = firstgen(POP)
-    sizetime = []
-    healthtime = []
     run = True
     while run:
         clock.tick(FPS)
@@ -81,15 +77,10 @@ def main(win):
             if event.type == pygame.QUIT:
                 run = False
                 break
-
-        sizetime.append(action(primer)[0])
-        healthtime.append(action(primer)[1])
-        draw(win, primer)
-        if len(primer) == 0:
+        action(primer)
+        redraw(win, primer)
+        if len(primer) <= 0:
             break
-
-    pinta(sizetime)
-
     pygame.quit()
     quit()
 

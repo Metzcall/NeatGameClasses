@@ -16,20 +16,33 @@ class bio():
 
 
     def att(self):
-        speed = self.body.genome.payload.count('A') * VEL + 1
-        size = self.body.genome.payload.count('B') * 2 + 5
-        heal = self.body.genome.payload.count('C') * 5 + 100
+        aes = self.body.genome.payload.count('A')
+        bes = self.body.genome.payload.count('B')
+        ces = self.body.genome.payload.count('C')
+        count = [aes,bes,ces]
+        speed = aes * VEL + 1
+        size = bes * 2 + 5
+        heal = ces * 5 + 100
         color = (255 / (self.body.genome.payload.count('C') + 1), 255 / (self.body.genome.payload.count('B') + 1),
                  255 / (self.body.genome.payload.count('A') + 1))
+        forma = 'assets/mono'+str(count.index(max(aes,bes,ces)))+'.png'
+        print(forma)
         self.speed = speed
         self.color = color
         self.scale = size
         self.health = heal
-        print(self.name,self.health,self.scale)
+        self.forma = forma
+
+    def colorea(self,win):
+        imagen = pygame.image.load(self.forma)
+        imagen = pygame.transform.scale(imagen,(self.scale,self.scale))
+        colorImage = imagen.convert_alpha()
+        colorImage.set_colorkey((0,0,0))
+        colorImage.fill(self.color,special_flags=pygame.BLEND_RGBA_MULT)
+        win.blit(imagen, self.position)
+        win.blit(colorImage, self.position)
 
 
-    def draw(self, win):
-        pygame.draw.circle(win, self.color, self.position, self.scale)
 
     def move(self, position):
         pass
