@@ -8,11 +8,11 @@ pygame.init()
 pygame.display.set_caption('Primordial Soup')
 
 BG_COLOR = (255, 255, 255)
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 1080, 720
 FPS = 20
 
-POP = 20
-AGING = 2
+POP = 50
+AGING = 1
 
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 
